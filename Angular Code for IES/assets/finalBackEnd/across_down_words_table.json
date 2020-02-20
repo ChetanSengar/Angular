@@ -1,0 +1,81 @@
+{
+    "Across Words": {
+        "PLANCHET": [
+            0,
+            3,
+            "Picture from a negative"
+        ],
+        "PERISCOPE": [
+            3,
+            2,
+            "Climb up"
+        ],
+        "ATHOS": [
+            4,
+            3,
+            "\"_ Fran^cisco"
+        ],
+        "NOSE": [
+            5,
+            3,
+            "Golf hole's rim"
+        ],
+        "LUNGFUL": [
+            6,
+            1,
+            "Make a noise like a sheep"
+        ],
+        "UNZIPS": [
+            12,
+            5,
+            "Old wound mark"
+        ],
+        "UKULELES": [
+            13,
+            3,
+            "Roughly built hut"
+        ]
+    },
+    "Down Words": {
+        "UNTIRING": [
+            2,
+            0,
+            "Polish"
+        ],
+        "CHIMER": [
+            0,
+            1,
+            "Witches"
+        ],
+        "KEYED": [
+            7,
+            1,
+            "Weep loudly"
+        ],
+        "GEPPETTO": [
+            4,
+            8,
+            "\"<i>The _ Birds</i>"
+        ],
+        "ANYHOW": [
+            6,
+            10,
+            "Military flute"
+        ],
+        "PROLONGING": [
+            2,
+            11,
+            "Drew back in fear"
+        ],
+        "INTEARS": [
+            1,
+            12,
+            "Shun"
+        ],
+        "EMERGENCY": [
+            0,
+            13,
+            "Poisonous substance produced by a micro-organism"
+        ]
+    }
+}
