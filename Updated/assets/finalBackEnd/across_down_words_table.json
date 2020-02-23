@@ -1,0 +1,56 @@
+{
+    "Across Words": {
+        "name": [{
+                "name": "PLANCHET",
+                "row": 0,
+                "col": 3,
+                "hint": "Picture from a negative"
+            },
+            {
+                "name": "PERISCOPE",
+                "row": 3,
+                "col": 2,
+                "hint": "Climb up"
+            },
+            {
+                "name": "ATHOS",
+                "row": 4,
+                "col": 3,
+                "hint": "_ Fran^cisco"
+            },
+            {
+                "name": "NOSE",
+                "row": 5,
+                "col": 3,
+                "hint": "Golf hole's rim"
+            }
+        ]
+    },
+    "Down Words": {
+        "name": [{
+                "name": "ANYHOW",
+                "row": 6,
+                "col": 10,
+                "hint": "Military flute"
+            },
+            {
+                "name": "PROLONGING",
+                "row": 2,
+                "col": 11,
+                "hint": "Drew back in fear"
+            },
+            {
+                "name": "INTEARS",
+                "row": 1,
+                "col": 12,
+                "hint": "Shun"
+            },
+            {
+                "name": "EMERGENCY",
+                "row": 0,
+                "col": 13,
+                "hint": "Poisonous substance produced by a micro-organism"
+            }
+        ]
+    }
+}

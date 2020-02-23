@@ -1,0 +1,75 @@
+<!--Left Side Start.-->
+<!-- Background component starts. -->
+<div id="nc-main" class="nc-main bg-cover bg-cc">
+
+    <!-- SLIDESHOW -->
+    <div class="full-wh">
+
+        <!-- STAR ANIMATION -->
+        <div class="bg-animation">
+            <div id='stars'></div>
+            <div id='stars2'></div>
+            <div id='stars3'></div>
+            <div id='stars4'></div>
+        </div>
+        <!-- / STAR ANIMATION -->
+        <!-- Navbar -->
+        <!-- <nav class="navbar navbar-default back">
+            <div class="container">
+
+            </div>
+        </nav> -->
+        <h1><img class="navbarImage" src="../assets/image.png">&nbsp;&nbsp;&nbsp;&nbsp;
+            <a class="color-white" href="#">IES HACKATHON</a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <img class="navbarImage" src="../assets/image2.png">
+        </h1>
+
+        <!--Left Side Start.-->
+        <div id="puzzle-wrapper">
+            <table id="puzzle" *ngIf="!showAns">
+                <tbody>
+                    <tr *ngFor="let data of arrayList;let rowIndex=index;">
+                        <td *ngFor="let temp of data.row;let keyIndex=index;" data-coords='123'>
+                            <input [ngClass]="{'wrong':temp.state==='not_present','correct':temp.state==='present'}" (keyup)="keyUp($event,rowIndex,keyIndex)" *ngIf="temp.value!='0' " maxlength="1" id="i" type="text">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table id="puzzle" *ngIf="showAns">
+                <tbody>
+                    <tr *ngFor="let data of arrayList;let rowIndex=index;">
+                        <td *ngFor="let temp of data.row;let keyIndex=index;" data-coords='123'>
+                            <input readonly *ngIf="temp.value!='0'" [(ngModel)]="temp.value" maxlength="1" id="i" type="text" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!--Left Side End.-->
+        <div id="puzzle-clues" style="position: relative; bottom: 98px;">
+            <img class="img-across" style="position: relative; top: 130px; right: 92px;" src="../assets/image.png">
+            <h2>Across</h2>
+
+            <ol id="across">
+                <li (click)="showAnswer(i,template)" *ngFor="let keys of answerHintacross;let i=index;" id="clueSide_1">{{keys.values}} </li>
+            </ol>
+
+            <h2 style="position: relative; top: 39px;">Down</h2>
+            <img class="img-across" src="../assets/image2.png" style="position: relative; left: 300px;">
+            <ol id="across" style="position: relative; bottom: 75px;">
+                <li (click)="showAnswer(i,template)" *ngFor="let keys of answerHintdown;let i=index;" id="clueSide_1">{{keys.values}} </li>
+            </ol>
+            <button type="button" (click)="showGridAns()" *ngIf="!showAns" style="color: black;">Show Answer</button>
+            <button type="button" (click)="hideGridAns()" *ngIf="showAns" style="color: black;">Hide Answer</button>
+        </div>
+        <!--Right Side End. -->
+    </div>
+</div>
+
+<router-outlet></router-outlet>
+<ng-template #template>
+    <div class="modal-header">
+        <h4 class="modal-title test-center"><img src="../assets/image.png">Hint :{{ modalService.config.initialState }}</h4>
+    </div>
+
+</ng-template>
