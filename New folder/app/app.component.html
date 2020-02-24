@@ -1,0 +1,92 @@
+<!--Left Side Start.-->
+<!-- Background component starts. -->
+<div id="nc-main" class="nc-main bg-cover bg-cc">
+    <!-- SLIDESHOW -->
+    <div class="full-wh">
+        <!-- STAR ANIMATION -->
+        <div class="bg-animation">
+            <div id='stars'></div>
+            <div id='stars2'></div>
+            <div id='stars3'></div>
+            <div id='stars4'></div>
+        </div>
+        <h1>
+            <img class="navbarImage" src="../assets/image.png" />&nbsp;&nbsp;&nbsp;&nbsp;
+            <a class="color-white" href="#">IES HACKATHON</a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <img class="navbarImage" src="../assets/image2.png" />
+        </h1>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div id="puzzle-clues">
+                        <!-- <img class="img-across" src="../assets/image.png"> -->
+                        <i><u><h2>Across:</h2></u></i>
+                        <ol id="across">
+                            <li (click)="showAnswer(i,template)" *ngFor="let keys of answerHintacross;let i=index;" id="clueSide_1">{{keys.values}} </li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="col col-8" id="puzzle-wrapper">
+                    <table id="puzzle" *ngIf="!showAns">
+                        <tbody>
+                            <tr *ngFor="let data of arrayList;let rowIndex=index;">
+                                <td *ngFor="let temp of data.row;let keyIndex=index;" data-coords='123'>
+                                    <input [ngClass]="{'wrong':temp.state==='not_present','correct':temp.state==='present'}" (keyup)="keyUp($event,rowIndex,keyIndex)" *ngIf="temp.value!='0' " maxlength="1" id="i" type="text">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table id="puzzle">
+                        <tbody>
+                            <tr>
+                                <td style="width: fit-content;">
+                                    <button (click)="showGridAns()" *ngIf="!showAns">Show Answer</button>
+                                    <button (click)="hideGridAns()" *ngIf="showAns">Hide Answer</button>
+                                </td>
+                                <td style="width: fit-content;">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                </td>
+                                <td style="width: fit-content;">
+                                    <button type="button" (click)="navigateBack()" style="color: black;">Back to Main</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table id="puzzle" *ngIf="showAns">
+                        <tbody>
+                            <tr *ngFor="let data of arrayList;let rowIndex=index;">
+                                <td *ngFor="let temp of data.row;let keyIndex=index;" data-coords='123'>
+                                    <input readonly *ngIf="temp.value!='0'" [(ngModel)]="temp.value" maxlength="1" id="i" type="text" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col" id="puzzle-clues">
+                    <u><i><h2>Down:</h2></i></u>
+                    <ol id="across">
+                        <li (click)="showAnswer(i,template)" *ngFor="let keys of answerHintdown;let i=index;" id="clueSide_1">{{keys.values}} </li>
+                    </ol>
+                </div>
+                <div class="col" id="puzzle-wrapper">
+                    <table id="puzzle">
+                        <tbody>
+                            <tr *ngFor="let data of arrayList;let rowIndex=index;">
+                                <td *ngFor="let temp of data.row;let keyIndex=index;" data-coords='123'>
+                                    <input [ngClass]="{'wrong':temp.state==='not_present','correct':temp.state==='present'}" (keyup)="keyUp($event,rowIndex,keyIndex)" *ngIf="temp.value!='0' " maxlength="1" id="i" type="text">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<router-outlet></router-outlet>
+<ng-template #template>
+    <div class="modal-header">
+        <h4 class="modal-title test-center"><img src="../assets/image.png">Hint :{{ modalService.config.initialState }}</h4>
+    </div>
+
+</ng-template>

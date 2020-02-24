@@ -1,0 +1,49 @@
+<section>
+    <div class="container cont">
+        <div class="background-img">
+            <div class="box">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <div class="content">
+                    <h1>!! Welcome !!</h1><br>
+                    <h4>to</h4><br>
+                    <h3>CROSSWORD PUZZLE</h3><br>
+                    <hr><br>
+                    <p>Please chose your difficulty level and let the game begins.</p>
+                    <br>
+                    <form class="text-center">
+                        <!--  -->
+                        <div class="select">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <select (change)="gridTypefunc($event, 'number')">
+                                        <option selected disabled>Grid size</option>
+                                        <option *ngFor="let data of gridType;" >{{data}}</option>
+                                         </select>
+                                    </td>
+                                    <td>&nbsp;
+                                        <select (change)="gridTypefunc($event, 'metrictype')">
+                                          <option selected disabled>Symmetric Type</option>
+                                          <option *ngFor="let data of metricType;" >{{data}}</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select (change)="gridTypefunc($event, 'themetype')">
+                                          <option selected disabled>Theme Type</option>
+                                          <option *ngFor="let data of themeType;" >{{data}}</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <button type="button" (click)="saveInput()" class="btn first">Start</button>
+                    </form>
+                </div>
+            </div>
+            <img class="imageMario">
+        </div>
+    </div>
+</section>
