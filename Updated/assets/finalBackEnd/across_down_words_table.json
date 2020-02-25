@@ -1,55 +1,135 @@
 {
     "Across Words": {
-        "name": [{
-                "name": "PLANCHET",
+        "name": [
+            {
                 "row": 0,
-                "col": 3,
-                "hint": "Picture from a negative"
+                "col": 4,
+                "name": "EPPS",
+                "hint": "Fruit with many seeds"
             },
             {
-                "name": "PERISCOPE",
+                "row": 1,
+                "col": 1,
+                "name": "DUD",
+                "hint": "Epoch"
+            },
+            {
+                "row": 2,
+                "col": 0,
+                "name": "BEATIT",
+                "hint": "German Mrs"
+            },
+            {
+                "row": 2,
+                "col": 7,
+                "name": "COUCH",
+                "hint": "Ex^clam^ation of rebuke"
+            },
+            {
                 "row": 3,
-                "col": 2,
-                "hint": "Climb up"
+                "col": 0,
+                "name": "MRBUMP",
+                "hint": "Give a title to"
             },
             {
-                "name": "ATHOS",
+                "row": 3,
+                "col": 7,
+                "name": "REBID",
+                "hint": "Central part"
+            },
+            {
                 "row": 4,
-                "col": 3,
-                "hint": "_ Fran^cisco"
+                "col": 0,
+                "name": "BOGONG",
+                "hint": "Door to a field or garden"
             },
             {
-                "name": "NOSE",
+                "row": 4,
+                "col": 7,
+                "name": "ADDER",
+                "hint": "Spare bone?"
+            },
+            {
                 "row": 5,
-                "col": 3,
-                "hint": "Golf hole's rim"
+                "col": 0,
+                "name": "ATSEA",
+                "hint": "Liquid in a tree"
+            },
+            {
+                "row": 5,
+                "col": 6,
+                "name": "CEDARS",
+                "hint": "Make a swallowing action with effort"
+            },
+            {
+                "row": 6,
+                "col": 4,
+                "name": "DOLLS",
+                "hint": "Crikey!"
+            },
+            {
+                "row": 7,
+                "col": 0,
+                "name": "DAMSONS",
+                "hint": "_ Lynn  wartime favourite"
+            },
+            {
+                "row": 7,
+                "col": 8,
+                "name": "FAUN",
+                "hint": "Cloud at ground level"
+            },
+            {
+                "row": 8,
+                "col": 0,
+                "name": "TEASES",
+                "hint": "Swiss _  cake"
+            },
+            {
+                "row": 8,
+                "col": 7,
+                "name": "CRUMB",
+                "hint": "Operate"
+            },
+            {
+                "row": 9,
+                "col": 0,
+                "name": "LEGBYE",
+                "hint": "Roman Catholic service"
+            },
+            {
+                "row": 9,
+                "col": 7,
+                "name": "TOUCH",
+                "hint": "Husband of a countess"
+            },
+            {
+                "row": 10,
+                "col": 0,
+                "name": "LEMONS",
+                "hint": "Ship's pole"
+            },
+            {
+                "row": 10,
+                "col": 7,
+                "name": "PAEAN",
+                "hint": "Small room in which to confine a prisoner"
+            },
+            {
+                "row": 11,
+                "col": 4,
+                "name": "ALES",
+                "hint": "Actor's starting signal"
             }
         ]
     },
     "Down Words": {
-        "name": [{
-                "name": "ANYHOW",
-                "row": 6,
-                "col": 10,
-                "hint": "Military flute"
-            },
+        "name": [
             {
-                "name": "PROLONGING",
-                "row": 2,
-                "col": 11,
-                "hint": "Drew back in fear"
-            },
-            {
-                "name": "INTEARS",
                 "row": 1,
-                "col": 12,
-                "hint": "Shun"
-            },
-            {
-                "name": "EMERGENCY",
-                "row": 0,
-                "col": 13,
-                "hint": "Poisonous substance produced by a micro-organism"
+                "col": 10,
+                "name": "ICIER",
+                "hint": "_ Ruth  US baseball player"
             }
         ]
     }

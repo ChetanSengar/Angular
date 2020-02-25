@@ -49,19 +49,19 @@ def generateGird():
 
 
 def getPattern(pattern):
-    
+
     # These are the Parent Patterns Defined, If required some more type and varities of Gird you can place here but make sure the Parent Gird Size should be ONLY 9x9.
     parent_pattern_1 = [[6],[2,4,6,8],[4],[1,2,4,6,7,8],[5],[2,3,4,6,8,9],[6],[2,4,6,8],[4]] # central symmetry
     parent_pattern_2 = [[1,3,7,9],[5],[1,3,7,9],[5],[2,4,5,6,8],[5],[1,3,7,9],[5],[1,3,7,9]] # full symmetry # central symmetry
-    parent_pattern_3 = [[4,5],[2,7,8],[2,4,5],[5,7,9],[1,3,7,9],[1,3,5],[5,6,8],[2,3,8],[5,6]] # full symmetry 
-    parent_pattern_4 = [[1,4,5,6],[5],[7,8,9],[3,7],[1,2,3],[5],[],[4,5,6],[9]] # diagonal 
+    parent_pattern_3 = [[4,5],[2,7,8],[2,4,5],[5,7,9],[1,3,7,9],[1,3,5],[5,6,8],[2,3,8],[5,6]] # full symmetry
+    parent_pattern_4 = [[1,4,5,6],[5],[7,8,9],[3,7],[1,2,3],[5],[],[4,5,6],[9]] # diagonal
     parent_pattern_5 = [[5],[5],[5],[4],[1,2,8,9],[6],[5],[5],[5]] # horizontal and vertical symmetry : 4
     parent_pattern_6 = [[5],[2,4,5,6,8],[5],[1,3,7,9],[5],[1,3,7,9],[5],[2,4,5,6,8],[5]] # central symmetry
-    
+
     # List of Parent Gird Patterns
     pattern_list = [parent_pattern_1,parent_pattern_2,parent_pattern_3,parent_pattern_4,parent_pattern_5,parent_pattern_6]
-    
-    
+
+
     # Selection of Girds on the basis of User Input
     if pattern == "diagonal":
         selected_parent_pattern = pattern_list[4]
@@ -73,10 +73,10 @@ def getPattern(pattern):
         selected_parent_pattern = pattern_list[3]
     elif pattern == "random":
         selected_parent_pattern = random.choice(pattern_list)
-    
+
     ## ======================================================================== ##
     ## This is Tricky part, This will added up more pattern in Selected Parent Gird when user request is above 9X9 gird size ##
-    
+
     ext_row = int((gird_size - 9)/2)
     if ext_row %2 != 0:
         ext_row = ext_row + 1
@@ -94,14 +94,14 @@ def getPattern(pattern):
 
 
     addon_pattern = [[random.randint(0, gird_size) for _ in range(random.randint(1,8))] for _ in range(ext_row)]
-    
+
     # Developer can play this part of code to see some fancy patterns in Gird #
     new_pattern_1 = addon_pattern + new_pattern_index + addon_pattern[::-1] # horizontal Symmetry
     new_pattern_2 = addon_pattern + new_pattern_index + [addon_pattern[i][::-1] for i in range(len(addon_pattern))] # horzontal same symmetry
     new_pattern_3 = addon_pattern + new_pattern_index + [addon_pattern[i][::-1] for i in range(len(addon_pattern))][::-1] # horzontal mirror symmetry
-    
+
     new_pattern_final = random.choice([new_pattern_1, new_pattern_2, new_pattern_3])  # Here final Gird pattern is calculated and wil be returned
-    
+
     return new_pattern_final
 
 
@@ -122,7 +122,7 @@ def getFillAcroosWords():
             if len(col)>=min_word_len_db:
                 word_size = col.count('-')
                 across_words_filler.append([i,word_size])
-                
+
     # getting word len at each column of gird, it is used for searching word of give lenght in database
     global down_words_filler, across_word_lengths, across_word_index, across_filling_words
     down_words_filler = []
@@ -132,17 +132,17 @@ def getFillAcroosWords():
             if len(col)>=min_word_len_db:
                 word_size = col.count('-')
                 down_words_filler.append([i,word_size])
-                
+
     # select word of lenght "word_thr" applied for ROW
     across_word_lengths = []
     for i in across_words_filler:
         across_word_lengths.append(i[1])
 
-    required_words = {}  
+    required_words = {}
     for word_thr in set(across_word_lengths):
         required_words[word_thr] = [word for word in list(word_data.keys()) if len(word) == word_thr]
-        
-        
+
+
     # Selecting Randomly Across Words from given database words.
     across_word_index = []              # across words index [row, col]
     across_filling_words = []           # across words used to fill the gird
@@ -178,7 +178,7 @@ def getFilldownWords():
     required_words = {}
     for word_thr in set(down_word_lengths):
         required_words[word_thr] = [word for word in list(word_data.keys()) if len(word) == word_thr]
-        
+
     # used to get pattern words for Col words only after filling the Across words
     def getRePattern(match_word):
         temp_word = ""
@@ -188,7 +188,7 @@ def getFilldownWords():
             else:
                 temp_word += "."
         return temp_word
-    
+
     # Filling Down Words in Gird
     down_filling_words = []
     for i in range(gird_size):
@@ -198,7 +198,7 @@ def getFilldownWords():
             if len(match_word) >= 3:
                 pattern = getRePattern(match_word)
                 for word in required_words[len(match_word)]:
-                    if re.findall(pattern, word):
+                    if re.findall((pattern), word):
                         d_words.append(word)
 
 
@@ -266,8 +266,8 @@ def getAcrossDownWords():
     words_with_hits = {
         'Across Words' : temp_across,
         'Down Words' : temp_down
-    }   
-    
+    }
+
     return words_with_hits
 
 
@@ -292,8 +292,8 @@ def StartCalculation():
     print('========= Program Started ==========')
     generateGird()                # generating Emtyp Gird of size "gird_size" user input.
 
-    # selecting the Gird pattern specified by user 
-    generatd_pattern = getPattern(pat)   
+    # selecting the Gird pattern specified by user
+    generatd_pattern = getPattern(pat)
 
     # filling out Generated gird with Symmetry pattern specied by user.
     for i in range(gird_size):
@@ -303,19 +303,20 @@ def StartCalculation():
     #print_gird()                      # displaying gird with pattern
     getFillAcroosWords()               # Calling to find and fill Across words in Gird
     getFilldownWords()                 # Calling to find and fill Down words in Gird
-    fillRemainingSpace()               # Filling out remaining Spaces in Gird 
+    fillRemainingSpace()               # Filling out remaining Spaces in Gird
     print_gird()                       # Displaying Final Gird Filled with Across and Down Words
     getAcrossDownWords()               # Getting the Across and Down Words Index with Clues
 
     # Writting JSON File of Across and Down Words with Index and Clues / Hints
     adw = getAcrossDownWords()
-    with open("src/assets/finalBackEnd/across_down_words_table.json", 'w', encoding='utf-8') as file:
+    with open("D:/IES Mega Hackathon - LazyCoders/IES/src/assets/finalBackEnd/across_down_words_table.json", 'w', encoding='utf-8') as file:
         json.dump(adw, file, ensure_ascii=False, indent=4)
-
+    print(adw)
     # Writting JSON File of Fill Gird of Words
     temp_ = dataConvertor()
-    gird_with_answers['hidden_words_in_girds'] = temp_
-    with open("src/assets/finalBackEnd/hidden_words_in_girds.json", 'w', encoding='utf-8') as file:
+    gird_with_answers = {}
+    gird_with_answers['hidden_words_in_gird'] = temp_
+    with open("D:/IES Mega Hackathon - LazyCoders/IES/src/assets/finalBackEnd/hidden_words_in_gird.json", 'w', encoding='utf-8') as file:
             json.dump(gird_with_answers, file, ensure_ascii=False, indent=4)
 
 
@@ -327,41 +328,45 @@ def StartCalculation():
 
 
 # ============= Start of Program ================== #
-file_path = "UK-DB.csv"                                              # source Word DB file NOTE : if given database file note opening due to "utf-8 encoding error", convert it to csv format. Before Converting file to csv format make sure their are NO Word Clues in Database having "," in them.
+file_path ="D:/IES Mega Hackathon - LazyCoders/IES/src/assets/finalBackEnd/UK-DB.csv" 
+json_file="//Path to JSON file. Should be like : ../src/assets/finalBackEnd/across_down.json"
+# source Word DB file NOTE : if given database file note opening due to "utf-8 encoding error", convert it to csv format. Before Converting file to csv format make sure their are NO Word Clues in Database having "," in them.
 game_count = 0
-
+print("# ============== Program Started ============= #")
 while True:
     if game_count == 0:
         word_data = DBFileReading(file_path)
         min_word_len_db = len(sorted(word_data, key=len, reverse=False)[1])  # getting minimum word length in given database
         max_word_len_db = len(sorted(word_data, key=len, reverse=True)[0])   # getting maximum word length in given database.
 
-    if "frontend_user_request.json" in os.listdir():
-        with open("src/app/first-page/across_down.json") as file:
+    if "across_down.json" in os.listdir('D:/IES Mega Hackathon - LazyCoders/IES/src/assets/finalBackEnd/'):
+        with open(json_file) as file:
             user_request_data = json.load(file)
+            #print(user_request_data)
         #os.remove("frontend_user_request.json")
-        
+
         ## Existing the Program ##
-        if user_request_data['State'] == "-1":
+        if user_request_data['posts']['stateType'] == "-1":
             print('======= Program Exit ==========')
-            user_request_data['State'] = "1"
-            with open("src/app/first-page/across_down.json","w") as file:
+            user_request_data['posts']['stateType'] = "1"
+            with open(json_file,"w") as file:
                 json.dump(user_request_data, file)
             break
-            
+
         ## if 1 then it will generate the Gird
-        if user_request_data['State'] == '1':
-            
+        if user_request_data['posts']['stateType'] == '1':
+
             global gird_size, pat, theme                     # decalred it to be Global will help in code optimization and calculation
-            gird_size = int(user_request_data['Gird_size'])  # user input
-            pat = user_request_data['Symmetry_type']         # user input 
-            theme = user_request_data['theme_type']
+            gird_size = int(user_request_data['posts']['grid'])  # user input
+            pat = user_request_data['posts']['sym_type']         # user input
+            #theme = user_request_data['posts']['theme_type']
+            theme = 'random'
 
             StartCalculation()                          # Generating Gird of requested Size and Symmetry and Filling Out Across and Down Words.
-            
+
             # updating the State for a fresh input
-            user_request_data['State'] = "0"
-            with open("src/app/first-page/across_down.json","w") as file:
+            user_request_data['posts']['stateType'] = "0"
+            with open(json_file,"w") as file:
                 json.dump(user_request_data, file)
 
 

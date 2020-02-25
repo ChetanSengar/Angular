@@ -1,0 +1,55 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "json-server",
+      "author": "typicode"
+    },
+    {
+      "grid": 12,
+      "sym_type": "diagonal",
+      "stateType": "1",
+      "id": 2
+    },
+    {
+      "grid": 10,
+      "sym_type": "central_symmetry",
+      "stateType": "1",
+      "id": 3
+    },
+    {
+      "grid": 12,
+      "sym_type": "horizontal_symmetry",
+      "stateType": "1",
+      "id": 4
+    },
+    {
+      "stateType": "1",
+      "grid": 15,
+      "sym_type": "horizontal_symmetry",
+      "id": 5
+    },
+    {
+      "grid": 12,
+      "sym_type": "diagonal",
+      "stateType": "1",
+      "id": 6
+    },
+    {
+      "grid": 13,
+      "sym_type": "diagonal",
+      "stateType": "1",
+      "id": 7
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}
