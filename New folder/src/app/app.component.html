@@ -85,16 +85,16 @@
 
                 <div id="puzzle-clues" style="padding-left: 33px; height: 509px;">
                     <i><u><h2>Across:</h2></u></i>
-                    <ol id="across">
-                        <li (click)="showAnswer(i,template)" *ngFor="let keys of answerHintacross;let i=index;" id="clueSide_1">{{keys.values}} </li>
-                    </ol>
+                    <ul id="across">
+                        <li *ngFor="let keys of answerHintacross;let i=index;" id="clueSide_1"> {{keys.index}}. {{keys.values}}({{keys.count}}) </li>
+                    </ul>
                 </div>
 
                 <div class="col" id="puzzle-clues" style="padding-right: 20px; height: 509px;">
                     <u><i><h2>Down:</h2></i></u>
-                    <ol id="across">
-                        <li (click)="showAnswer(i,template)" *ngFor="let keys of answerHintdown;let i=index;" id="clueSide_1">{{keys.values}} </li>
-                    </ol>
+                    <ul id="across">
+                        <li *ngFor="let keys of answerHintdown;let i=index;" id="clueSide_1">{{keys.index}}. {{keys.values}}({{keys.count}}) </li>
+                    </ul>
                 </div>
                 <div class="col" id="puzzle-wrapper">
                     <table id="puzzle" *ngIf="!showAns">
@@ -102,6 +102,8 @@
                             <tr *ngFor="let data of arrayList;let rowIndex=index;">
                                 <td *ngFor="let temp of data.row;let keyIndex=index;" data-coords='123'>
                                     <input [ngClass]="{'wrong':temp.state==='not_present','correct':temp.state==='present'}" (keyup)="keyUp($event,rowIndex,keyIndex)" *ngIf="temp.value!='0' " maxlength="1" id="i" type="text">
+                                    <p *ngIf="temp.placeHolder!=0 && temp.value!='0'">{{temp.placeHolder}}</p>
+                                    <!-- <p>{{temp.placeHolder}}</p> -->
                                 </td>
                             </tr>
                         </tbody>
@@ -111,6 +113,8 @@
                             <tr *ngFor="let data of arrayList;let rowIndex=index;">
                                 <td *ngFor="let temp of data.row;let keyIndex=index;" data-coords='123'>
                                     <input readonly *ngIf="temp.value!='0'" [(ngModel)]="temp.value" maxlength="1" id="i" type="text" />
+
+
                                 </td>
                             </tr>
                         </tbody>

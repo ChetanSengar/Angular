@@ -6,7 +6,7 @@ import { BsModalRef } from 'ngx-bootstrap';
 import { BsModalService } from 'ngx-bootstrap';
 import { forkJoin } from 'rxjs';
 import { Router } from '@angular/router';
-
+import  Swal  from 'sweetalert2';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -16,6 +16,7 @@ import { Router } from '@angular/router';
 
 export class AppComponent implements OnInit {
   gridType = [9, 10, 11, 12, 13, 14, 15];
+  allAnswerIndex:number=0;
   metricType = ['full_symmetry', 'central_symmetry', 'diagonal', 'horizontal_symmetry', 'vertical_symmetry'];
   modelData: GridDataModel = new GridDataModel();
   title = 'IES';
@@ -23,6 +24,7 @@ export class AppComponent implements OnInit {
   modalRef: BsModalRef;
   stringTestArray = [];
   answerModel: [];
+  totalIndex:number=0;
   showAns: boolean = false;
   answerHintacross = [];
   answerHintdown = [];
@@ -45,25 +47,42 @@ export class AppComponent implements OnInit {
       this.arrayList.map((element, index) => {
         element.row.map((data, rowIndex) => {
           //this.data={value:data,state:'nutral'};
-          this.arrayList[index].row[rowIndex] = { value: data, state: 'nutral' };
+          this.arrayList[index].row[rowIndex] = { value: data, state: 'nutral',placeHolder:0 };
 
         });
       });
-
+      this.answerHintdown=[];
+      this.answerHintacross=[];
       this.answerListArray = res[0].hidden_words_in_gird;
       this.answerHint = [];
       this.answerModel = res[1]['Across Words'].name;
-
-      for (let property of res[1]['Across Words'].name) {
-        this.answerHintacross.push({ key: property.name, values: property.hint });
+       for (let property of res[1]['Across Words'].name) {
+        this.totalIndex +=1;
+        this.allAnswerIndex +=1;
+        this.answerHintacross.push({ key: property.name, values: property.hint, count:property.name.length,row:property.row,col:property.col,index:this.allAnswerIndex });
       }
 
       for (let property of res[1]['Down Words'].name) {
-        this.answerHintdown.push({ key: property.name, values: property.hint });
+       this.allAnswerIndex +=1;
+        this.answerHintdown.push({ key: property.name, values: property.hint, count:property.name.length, row:property.row,col:property.col,index:this.allAnswerIndex });
       }
+      this.getHintsOnBoard(this.answerHintacross,this.answerHintdown);
+
 
     });
-    console.log("cross word", this.answerHintacross, this.answerHintdown)
+
+   }
+  getHintsOnBoard(acrossList,downList)
+  {
+      for(let i=0;i<acrossList.length;i++)
+      {
+          this.showAnswer(acrossList[i],i+1);
+      }
+      for(let i=0;i<downList.length;i++)
+      {
+        this.totalIndex +=1;
+          this.showAnswer(downList[i],this.totalIndex);
+      }
   }
   //For Nav.
   setInputValue(event: any) {
@@ -108,10 +127,19 @@ export class AppComponent implements OnInit {
 
   }
 
-  showAnswer(rowIndex, template) {
-    this.openModal(template, this.answerHint[rowIndex].key);
+  // showAnswer(rowIndex, template) {
+  //   this.openModal(template, this.answerHint[rowIndex].key);
+
+  // }
+    showAnswer(data, lineNumber) {
+       this.arrayList[data.row].row[data.col].placeHolder=lineNumber;
+      console.log('new array list is',this.arrayList);
+    // this.openModal(template, this.answerHint[rowIndex].key);
+
+
 
   }
+
   getAppendString() {
     this.testString = '';
     this.stringTestArray.map(el => {
@@ -138,7 +166,33 @@ export class AppComponent implements OnInit {
   navigateBack() {
     this.router.navigate(['']);
   }
+  checkWonStatus(key)
+  {
+    debugger
+   let findKey= this.answerHintacross.find(el=>el.key===key);
+   if(!!findKey)
+   {
+    Swal.fire({
 
+      icon: 'success',
+      title: 'Sentence Completed !'
+      })
+   }
+   else
+   {
+    let SeconddKey= this.answerHintdown.find(el=>el.key===key);
+    if(!!SeconddKey)
+    {
+      Swal.fire({
+
+        icon: 'success',
+        title: 'Sentence Completed !'
+        })
+    }
+
+   }
+
+  }
   keyUp(event, rowIndex, keyIndex) {
     console.log(rowIndex);
     let enterKey: string = event.target.value;
@@ -146,25 +200,25 @@ export class AppComponent implements OnInit {
 
     this.checkString(toLowerCaseKey, rowIndex, keyIndex);
     this.testString = this.getAppendString();
+    console.log("appned string is",this.testString);
+    this.checkWonStatus(this.testString);
     this.answerModel.map(element => {
       if (element.name.charAt(0) === toLowerCaseKey && element.row === rowIndex && element.col === keyIndex) {
-        this.arrayList[rowIndex].row[keyIndex].state = 'present';
+        this.arrayList[rowIndex].row[keyIndex].state = 'nutral';
 
-      }
-      else if (this.testString.length > 1 && element.name.includes(this.testString)) {
-        this.arrayList[rowIndex].row[keyIndex].state = 'present';
+      } else if (this.testString.length > 1 && element.name.includes(this.testString)) {
+        this.arrayList[rowIndex].row[keyIndex].state = 'nutral';
         if (this.testString === element.name) {
-          alert('Congrats ! One Sentence completed.');
+          // alert('Congrats ! One Sentence completed.');
         }
-      }
-      else if (this.testString.length > 1 && !element.name.includes(this.testString)) {
-        this.arrayList[rowIndex].row[keyIndex].state = 'not_present';
+      } else if (this.testString.length > 1 && !element.name.includes(this.testString)) {
+        this.arrayList[rowIndex].row[keyIndex].state = 'nutral';
       }
 
     });
   }
   showGridAns() {
-    console.log("Hello World !!");
+    console.log('Hello World !!');
     this.showAns = true;
   }
   hideGridAns() {

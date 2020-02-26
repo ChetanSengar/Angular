@@ -5,6 +5,22 @@ body {
     font-family: cursive !important;
 }
 
+tr td {
+    position: relative;
+}
+
+ul li {
+    list-style: none;
+}
+
+tr td p {
+    color: #00000091;
+    position: absolute;
+    bottom: 8px;
+    font-weight: 600;
+    font-size: 16px;
+}
+
 .back {
     background: #000000;
     background-repeat: no-repeat;
