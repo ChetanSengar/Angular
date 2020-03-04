@@ -1,16 +1,17 @@
 
 # coding: utf-8
 
-# In[1]:
 
 
 import random
 import json
 import re
 import os
+import shutil
+from datetime import datetime, timedelta
+from copy import deepcopy
 
 
-# In[2]:
 
 
 # Reading Source Word DB file and converting and returning with Word Dictornary type.
@@ -27,7 +28,6 @@ def DBFileReading(file_path):
     return word_dict
 
 
-# In[3]:
 
 
 # This function is used to print the Gird
@@ -36,7 +36,6 @@ def print_gird():
         print('\t' * 5 + ' '.join(gird[x]))
 
 
-# In[4]:
 
 
 #Here Gird will generate
@@ -45,7 +44,6 @@ def generateGird():
     gird = [['-' for _ in range(gird_size)] for _ in range(gird_size)]
 
 
-# In[5]:
 
 
 def getPattern(pattern):
@@ -55,8 +53,9 @@ def getPattern(pattern):
     parent_pattern_2 = [[1,3,7,9],[5],[1,3,7,9],[5],[2,4,5,6,8],[5],[1,3,7,9],[5],[1,3,7,9]] # full symmetry # central symmetry
     parent_pattern_3 = [[4,5],[2,7,8],[2,4,5],[5,7,9],[1,3,7,9],[1,3,5],[5,6,8],[2,3,8],[5,6]] # full symmetry
     parent_pattern_4 = [[1,4,5,6],[5],[7,8,9],[3,7],[1,2,3],[5],[],[4,5,6],[9]] # diagonal
-    parent_pattern_5 = [[5],[5],[5],[4],[1,2,8,9],[6],[5],[5],[5]] # horizontal and vertical symmetry : 4
+    #parent_pattern_5 = [[5],[5],[5],[4],[1,2,8,9],[6],[5],[5],[5]] # horizontal and vertical symmetry : 4
     parent_pattern_6 = [[5],[2,4,5,6,8],[5],[1,3,7,9],[5],[1,3,7,9],[5],[2,4,5,6,8],[5]] # central symmetry
+    parent_pattern_5 = [[0,3,5,8],[0,1,7,8],[1,3,5,7],[4],[2,6],[4],[1,3,5,7],[0,1,7,8],[0,3,5,8]] # diagonal
 
     # List of Parent Gird Patterns
     pattern_list = [parent_pattern_1,parent_pattern_2,parent_pattern_3,parent_pattern_4,parent_pattern_5,parent_pattern_6]
@@ -105,7 +104,6 @@ def getPattern(pattern):
     return new_pattern_final
 
 
-# In[6]:
 
 
 ## ================================================================================= ##
@@ -160,7 +158,6 @@ def getFillAcroosWords():
                 across_word_index.append([i, col_index])
 
 
-# In[7]:
 
 
 ## ================================================================================= ##
@@ -216,7 +213,7 @@ def getFilldownWords():
 
     down_word_index = []
     for i in range(gird_size):
-        required_row_pattern = [_ for _ in "".join([row[i] for row in gird]).split('0') if len(_)> 1]
+        required_row_pattern = [_ for _ in "".join([row[i] for row in gird]).split('0') if len(_)>=2] ###############changes made here
         for row_pattern in required_row_pattern:
             col_index = "".join([row[i] for row in gird]).find(row_pattern)
             word_len = len(list(row_pattern))
@@ -229,7 +226,6 @@ def getFilldownWords():
                     down_word_index.append([i,col_index])
 
 
-# In[8]:
 
 
 # This function is used for Filling out the remaining Space in the Grid, After Filling Down and Across Words due to Words Shortage in database these spaces remains empty, so filling out them here.
@@ -242,7 +238,6 @@ def fillRemainingSpace():
                 gird[i][k] = '0'
 
 
-# In[9]:
 
 
 #This function will return all Across and Down Words with Clues and Row and Column number where they are located in the Gird
@@ -284,12 +279,36 @@ def dataConvertor():
         id += 1
     return l
 
+## ===================================== ##
+def customer_json():
+    N = 7  # Days buffer for gird expire
+    gird_generate_date = datetime.now().strftime('%Y%m%d')
+    gird_expire_date = (datetime.now() - timedelta(days=N)).strftime('%Y%m%d')
 
-# In[10]:
+    customer_required_json_format_file = {}
+    customer_required_json_format_file['pml_id'] = game_id
+    customer_required_json_format_file['abbr'] = 'XW'
+    customer_required_json_format_file['cdate'] = gird_generate_date
+    customer_required_json_format_file['region'] = 'IND'
+    customer_required_json_format_file['title'] = 'crossword'
+    customer_required_json_format_file['expired'] = gird_expire_date
+    customer_required_json_format_file['symmtery'] = pat
+    customer_required_json_format_file['gird'] = {
+        'cols': gird_size,
+        'rows': gird_size,
+        'pzlmap': empty_gird,
+        'solmap': gird}
+
+    customer_required_json_format_file['items'] = {'clues': adw}
 
 
-def StartCalculation():
-    print('========= Program Started ==========')
+    with open("temp_files/crossword.txt", "w") as file:
+        file.write(str(customer_required_json_format_file))
+
+
+## ===================================== ##
+def StartCalculation(max_down_words_thr):
+    print('========= Generating Grid ==========')
     generateGird()                # generating Emtyp Gird of size "gird_size" user input.
 
     # selecting the Gird pattern specified by user
@@ -299,90 +318,109 @@ def StartCalculation():
     for i in range(gird_size):
         for j in generatd_pattern[i]:
             gird[i][j-1] = '0'         # this will be a bloackage in the Gird as per the Pattern generated.
-
+    
+    global empty_gird
+    empty_gird = deepcopy(gird)
+    
     #print_gird()                      # displaying gird with pattern
+    #print("\n\n\n")
     getFillAcroosWords()               # Calling to find and fill Across words in Gird
+    #print_gird()
+
     getFilldownWords()                 # Calling to find and fill Down words in Gird
+    #print_gird()
+    #print("\n\n\n")
     fillRemainingSpace()               # Filling out remaining Spaces in Gird
-    print_gird()                       # Displaying Final Gird Filled with Across and Down Words
+    #print_gird()                       # Displaying Final Gird Filled with Across and Down Words
     getAcrossDownWords()               # Getting the Across and Down Words Index with Clues
 
     # Writting JSON File of Across and Down Words with Index and Clues / Hints
+    global adw, gird_with_answers
+
+
     adw = getAcrossDownWords()
-    with open("D:/IES Mega Hackathon - LazyCoders/IES/src/assets/finalBackEnd/across_down_words_table.json", 'w', encoding='utf-8') as file:
-        json.dump(adw, file, ensure_ascii=False, indent=4)
-    print(adw)
-    # Writting JSON File of Fill Gird of Words
-    temp_ = dataConvertor()
-    gird_with_answers = {}
-    gird_with_answers['hidden_words_in_gird'] = temp_
-    with open("D:/IES Mega Hackathon - LazyCoders/IES/src/assets/finalBackEnd/hidden_words_in_gird.json", 'w', encoding='utf-8') as file:
-            json.dump(gird_with_answers, file, ensure_ascii=False, indent=4)
+    print('Gird Size {} Across words count : {} \t Down words count : {} Thr {} '.format(gird_size, len(adw['Across Words']['name']), len(adw['Down Words']['name']), max_down_words_thr))
+
+    if max_down_words_thr <= len(adw['Down Words']['name']):
+        max_down_words_thr = len(adw['Down Words']['name'])
+        with open("temp_files/across_down_words_table.json", 'w', encoding='utf-8') as file:
+            json.dump(adw, file, ensure_ascii=False, indent=4)
 
 
-    #print("Down Words Count ",len(down_filling_words))
-    #print("Across Words Count ",len(across_filling_words))
+        # Writting JSON File of Fill Gird of Words
+        temp_ = dataConvertor()
+        gird_with_answers = {}
+        gird_with_answers['hidden_words_in_gird'] = temp_
+        with open("temp_files/hidden_words_in_gird.json", 'w', encoding='utf-8') as file:
+                json.dump(gird_with_answers, file, ensure_ascii=False, indent=4)
 
 
-# In[15]:
+        customer_json() # writting json file according to customer requirements
+
+    return max_down_words_thr
 
 
 # ============= Start of Program ================== #
-file_path ="D:/IES Mega Hackathon - LazyCoders/IES/src/assets/finalBackEnd/UK-DB.csv" 
-json_file="//Path to JSON file. Should be like : ../src/assets/finalBackEnd/across_down.json"
+file_path ="UK-DB.csv" 
+json_file="across_down.json"
 # source Word DB file NOTE : if given database file note opening due to "utf-8 encoding error", convert it to csv format. Before Converting file to csv format make sure their are NO Word Clues in Database having "," in them.
-game_count = 0
+global game_id
+game_id = 0
 print("# ============== Program Started ============= #")
 while True:
-    if game_count == 0:
+    if game_id == 0:
         word_data = DBFileReading(file_path)
         min_word_len_db = len(sorted(word_data, key=len, reverse=False)[1])  # getting minimum word length in given database
         max_word_len_db = len(sorted(word_data, key=len, reverse=True)[0])   # getting maximum word length in given database.
-
-    if "across_down.json" in os.listdir('D:/IES Mega Hackathon - LazyCoders/IES/src/assets/finalBackEnd/'):
+    
+    
+    
+    if "across_down.json" in os.listdir():
         with open(json_file) as file:
             user_request_data = json.load(file)
             #print(user_request_data)
         #os.remove("frontend_user_request.json")
 
-        ## Existing the Program ##
-        if user_request_data['posts']['stateType'] == "-1":
-            print('======= Program Exit ==========')
-            user_request_data['posts']['stateType'] = "1"
-            with open(json_file,"w") as file:
-                json.dump(user_request_data, file)
-            break
 
         ## if 1 then it will generate the Gird
         if user_request_data['posts']['stateType'] == '1':
-
+            game_id += 1
             global gird_size, pat, theme                     # decalred it to be Global will help in code optimization and calculation
             gird_size = int(user_request_data['posts']['grid'])  # user input
             pat = user_request_data['posts']['sym_type']         # user input
-            #theme = user_request_data['posts']['theme_type']
-            theme = 'random'
+            
+            max_down_words_thr = 0
+            for _ in range(20):
+                max_down_words_thr = StartCalculation(max_down_words_thr)                          # Generating Gird of requested Size and Symmetry and Filling Out Across and Down Words.
 
-            StartCalculation()                          # Generating Gird of requested Size and Symmetry and Filling Out Across and Down Words.
-
+            # moving all 3 files to location were anugular will be read them as final file
+            
+            shutil.move('temp_files/across_down_words_table.json', "across_down_words_table.json")
+            shutil.move('temp_files/hidden_words_in_gird.json', "hidden_words_in_gird.json")
+            shutil.move('temp_files/crossword.txt', "crossword.txt")
+            
+            
+            
             # updating the State for a fresh input
             user_request_data['posts']['stateType'] = "0"
             with open(json_file,"w") as file:
                 json.dump(user_request_data, file)
 
 
-# In[14]:
-
 
 ## =========== User request JSON File Testing ============== #
-"""
-user_request = {
-    'Gird_size': "12",
-    'Symmetry_type':  "diagonal",
+"""user_request = {
+    'grid': "12",
+    'sym_type':  "diagonal",
     'theme_type': "random",
-    'State' : '1'
+    'stateType' : '1'
 }
 
-with open('frontend_user_request.json','w') as file:
-    json.dump(user_request, file)
+dummy = {}
+dummy['posts'] = user_request 
 
+with open('across_down.json','w') as file:
+    json.dump(dummy, file)
 """
+
+

@@ -1,6 +1,6 @@
 <style>
     * {
-        font-family: cursive !important;
+        font-family: Arial, Helvetica, sans-serif !important;
     }
     
     .td-nav {
@@ -12,19 +12,19 @@
     }
     
     .button-nav-1 {
-        font-size: 28px;
-        border-radius: 0 0 0 1em;
+        font-size: 17px;
+        border-radius: 1em;
         border: #ffffff;
     }
     
     .button-nav-2 {
-        font-size: 28px;
-        border-radius: 0 1em 0 0;
+        font-size: 25px;
+        border-radius: 1em;
         border: #ffffff;
     }
     
     .select-nav {
-        font-size: 28px;
+        font-size: 17px;
         border-radius: 0.5em 0.5em 0 0;
         box-shadow: 0 0 10px #ffffff;
         text-align-last: center;
@@ -48,31 +48,36 @@
         text-align: center;
         padding: 14px 16px;
         text-decoration: none;
-        font-size: 28px;
+        font-size: 20px;
     }
 </style>
 
 <ul class="ul-nav">
     <li class="li-nav"><a class="li-a-nav">CrossWord Generator</a></li>
-    <li style="float: right; padding: 8px;">
-        <button type="button" (click)="saveInput()" class="btn button-nav-1">Generate</button>
+    <li style="float: right; padding: 8px;" ng-controller="MainCtrl">
+        <!-- <button type="button" (click)="saveInput()" class="btn button-nav-1">Generate</button> -->
         <button class="btn button-nav-2" (click)="showGridAns()" *ngIf="!showAns">Show Answer</button>
         <button class="btn button-nav-2" (click)="hideGridAns()" *ngIf="showAns">Hide Answer</button>
+        <!-- Need to change the link with the cloud one -->
+        <button class="btn button-nav-2"><a style="text-decoration:none" href="../assets/finalBackEnd/crossword.txt" download>Download</a></button>
     </li>
     <li style="float: right;">
         <table class="table-nav">
             <tr>
                 <td class="td-nav">
-                    <select (change)="gridTypefunc($event, 'number')" class="select-nav">
-                    <option selected disabled>Grid size</option>
-                    <option *ngFor="let data of gridType;" >{{data}}</option>
-                     </select>
+                    <select (change)="gridTypefunc($event, 'number')" [(ngModel)]="gridTypeValue" class="select-nav">
+					  <option selected disabled>Grid size</option>
+					  <option *ngFor="let data of gridType;" >{{data}}</option>
+						</select>
                 </td>
                 <td class="td-nav">
-                    <select (change)="gridTypefunc($event, 'metrictype')" class="select-nav">
-                      <option selected disabled>Symmetric Type</option>
-                      <option *ngFor="let data of metricType;" >{{data}}</option>
-                    </select>
+                    <select (change)="gridTypefunc($event, 'metrictype')" [(ngModel)]="gridMatric" class="select-nav">
+						<option selected disabled>Symmetric Type</option>
+						<option *ngFor="let data of metricType;" >{{data}}</option>
+					  </select>
+                </td>
+                <td class="td-nav">
+                    <button type="button" (click)="saveInput()" class="btn button-nav-1">Generate</button>
                 </td>
             </tr>
         </table>
@@ -82,20 +87,33 @@
     <div class="full-wh">
         <div class="container">
             <div class="row">
-
-                <div id="puzzle-clues" style="padding-left: 33px; height: 509px;">
-                    <i><u><h2>Across:</h2></u></i>
+                <div class="col" id="puzzle-clues">
+                    <i><h2>Across clues:</h2></i>
                     <ul id="across">
                         <li *ngFor="let keys of answerHintacross;let i=index;" id="clueSide_1"> {{keys.index}}. {{keys.values}}({{keys.count}}) </li>
+                        <!-- <li *ngFor="let keys of answerHintdown;let i=index;" id="clueSide_1">{{keys.index}}. {{keys.values}}({{keys.count}}) </li> -->
+                    </ul>
+                    <i><h2>Bottom clues:</h2></i>
+                    <ul id="across">
+                        <li *ngFor="let keys of answerHintdown;let i=index;" id="clueSide_1">{{keys.index}}. {{keys.values}}({{keys.count}}) </li>
                     </ul>
                 </div>
 
+                <!-- <div id="puzzle-clues" style="padding: 20px; height: fit-c;">
+                    <i><u><h2>Across:</h2></u></i>
+                    <ul id="across">
+                        <li *ngFor="let keys of answerHintacross;let i=index;" id="clueSide_1"> {{keys.index}}. {{keys.values}}({{keys.count}}) </li>
+                        <li *ngFor="let keys of answerHintdown;let i=index;" id="clueSide_1">{{keys.index}}. {{keys.values}}({{keys.count}}) </li>
+                    </ul>
+                </div>
                 <div class="col" id="puzzle-clues" style="padding-right: 20px; height: 509px;">
                     <u><i><h2>Down:</h2></i></u>
                     <ul id="across">
                         <li *ngFor="let keys of answerHintdown;let i=index;" id="clueSide_1">{{keys.index}}. {{keys.values}}({{keys.count}}) </li>
                     </ul>
-                </div>
+                </div> -->
+
+
                 <div class="col" id="puzzle-wrapper">
                     <table id="puzzle" *ngIf="!showAns">
                         <tbody>
@@ -113,8 +131,7 @@
                             <tr *ngFor="let data of arrayList;let rowIndex=index;">
                                 <td *ngFor="let temp of data.row;let keyIndex=index;" data-coords='123'>
                                     <input readonly *ngIf="temp.value!='0'" [(ngModel)]="temp.value" maxlength="1" id="i" type="text" />
-
-
+                                    <p *ngIf="temp.placeHolder!=0 && temp.value!='0'">{{temp.placeHolder}}</p>
                                 </td>
                             </tr>
                         </tbody>

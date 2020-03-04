@@ -6,7 +6,8 @@ import { BsModalRef } from 'ngx-bootstrap';
 import { BsModalService } from 'ngx-bootstrap';
 import { forkJoin } from 'rxjs';
 import { Router } from '@angular/router';
-import  Swal  from 'sweetalert2';
+import {AnswerHintacross} from './responseList.model'
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -16,33 +17,45 @@ import  Swal  from 'sweetalert2';
 
 export class AppComponent implements OnInit {
   gridType = [9, 10, 11, 12, 13, 14, 15];
-  allAnswerIndex:number=0;
+  allAnswerIndex: number = 0;
   metricType = ['full_symmetry', 'central_symmetry', 'diagonal', 'horizontal_symmetry', 'vertical_symmetry'];
   modelData: GridDataModel = new GridDataModel();
   title = 'IES';
   testString: string = '';
   modalRef: BsModalRef;
-  stringTestArray = [];
-  answerModel: [];
-  totalIndex:number=0;
+  stringTestArray: Array<AnswerHintacross>;
+  answerModel: Array<ObjectModel>;
+  totalIndex: number = 0;
   showAns: boolean = false;
-  answerHintacross = [];
-  answerHintdown = [];
-  answerHint =[];
+  answerHintacross: Array<AnswerHintacross>;
+  answerHintdown: Array<AnswerHintacross>;
+  answerHint: any[];
   arrayList: Array<ResponseListModel>;
   answerListArray: Array<ResponseListModel>;
   data: any;
+  gridTypeValue: any;
+  gridMatric: any;
 
   constructor(private httpRef: HttpClient, private httpClient: HttpClient, public modalService: BsModalService, private router: Router) {
-  }
+	  
+	var dataFromLocalStorage = JSON.parse(localStorage.getItem('dropdownData'));
+    if(dataFromLocalStorage != null)
+		{
+			this.gridTypeValue=dataFromLocalStorage['grid'];
+			this.gridMatric = dataFromLocalStorage['sym_type'];
+		}
+		else
+		{
+			this.gridTypeValue='Grid size';
+			this.gridMatric ='Symmetric Type';
+		}
+	}
 
   ngOnInit() {
     this.modalService.onHide.subscribe((e) => {
-      console.log('close', this.modalService.config.initialState);
+      //console.log('close', this.modalService.config.initialState);
     });
     this.getData().subscribe(res => {
-
-      console.log(res);
       this.arrayList = res[0].hidden_words_in_gird;
       this.arrayList.map((element, index) => {
         element.row.map((data, rowIndex) => {
@@ -72,72 +85,71 @@ export class AppComponent implements OnInit {
     });
 
    }
-  getHintsOnBoard(acrossList,downList)
-  {
-      for(let i=0;i<acrossList.length;i++)
-      {
-          this.showAnswer(acrossList[i],i+1);
-      }
-      for(let i=0;i<downList.length;i++)
-      {
-        this.totalIndex +=1;
-          this.showAnswer(downList[i],this.totalIndex);
-      }
-  }
+	getHintsOnBoard(acrossList,downList)
+	{
+		for(let i=0;i<acrossList.length;i++)
+		{
+			this.showAnswer(acrossList[i],i+1);
+		}
+		for(let i=0;i<downList.length;i++)
+		{
+			this.totalIndex +=1;
+			this.showAnswer(downList[i],this.totalIndex);
+		}
+	}
   //For Nav.
   setInputValue(event: any) {
     this.data = event.target.value;
   }
+  
   saveInput() {
-    this.modelData.stateType = '1';
-    this.modelData.grid = parseInt(this.modelData.grid);
-    if (this.modelData.grid && this.modelData.sym_type && this.modelData.stateType) {
-      this.httpClient.post('http://localhost:3000/posts', this.modelData).subscribe(el => {
-        console.log('asdsad', this.modelData);
-        //this.route.navigate(['game-start']);
+    this.modelData.grid = parseInt(this.gridTypeValue);
+	  this.modelData.sym_type = this.gridMatric;
+	  this.modelData.stateType = '1';
+    if (this.gridTypeValue && this.gridMatric && this.modelData.stateType) {
+		this.httpClient.post('http://localhost:3000/posts', this.modelData).subscribe(el => {
+      console.log(el)
       });
+    }else{
+		alert("Please select the Grid Size and Symmetric Type")
     }
   }
+  
   gridTypefunc(event, key) {
     if (key === 'number') {
-      this.modelData.grid = event.target.value;
+		this.modelData.grid = event.target.value;
     } else if (key === 'metrictype') {
-      this.modelData.sym_type = event.target.value;
-    } else {
-      this.modelData.stateType = event.target.value;
+		this.modelData.sym_type = event.target.value;
     }
+
+	if(key =='number')
+		if(this.gridMatric)
+			this.modelData.sym_type = this.gridMatric;
+		
+	if(key =='metrictype')
+		if(this.gridTypeValue)
+			this.modelData.grid = this.gridTypeValue;
+		
+	localStorage.setItem('dropdownData', JSON.stringify(this.modelData));
   }
   //End of Nav.
 
-  openModal(template: TemplateRef<any>, data) {
-
-    this.modalRef = this.modalService.show(template, {
-      initialState: data
-    });
-    setTimeout(() => {
-      this.modalRef.hide();
-
-    }, 1000);
-  }
-  getData(): Observable<any> {
-
-    let response2 = this.httpRef.get('../assets/finalBackEnd/hidden_words_in_gird.json');
-    let response = this.httpRef.get('../assets/finalBackEnd/across_down_words_table.json');
-    return forkJoin([response2, response]);
-
-  }
-
-  // showAnswer(rowIndex, template) {
-  //   this.openModal(template, this.answerHint[rowIndex].key);
+	openModal(template: TemplateRef<any>, data) {
+		this.modalRef = this.modalService.show(template, { initialState: data});
+		setTimeout(() => { this.modalRef.hide();}, 1000);
+	}
+  
+	getData(): Observable<any> {
+		let response2 = this.httpRef.get('../assets/finalBackEnd/hidden_words_in_gird.json');
+		let response = this.httpRef.get('../assets/finalBackEnd/across_down_words_table.json');
+		return forkJoin([response2, response]);
+	}
 
   // }
     showAnswer(data, lineNumber) {
-       this.arrayList[data.row].row[data.col].placeHolder=lineNumber;
-      console.log('new array list is',this.arrayList);
-    // this.openModal(template, this.answerHint[rowIndex].key);
-
-
-
+		this.arrayList[data.row].row[data.col].placeHolder=lineNumber;
+		//console.log('new array list is',this.arrayList);
+		// this.openModal(template, this.answerHint[rowIndex].key)
   }
 
   getAppendString() {
@@ -159,7 +171,6 @@ export class AppComponent implements OnInit {
     else {
       this.stringTestArray.push(obj);
     }
-    console.log("find data", findData);
   }
 
   //mine.
@@ -172,35 +183,35 @@ export class AppComponent implements OnInit {
    let findKey= this.answerHintacross.find(el=>el.key===key);
    if(!!findKey)
    {
-    Swal.fire({
+	 alert("Sentence Completed !");
+    /*Swal.fire({
 
       icon: 'success',
       title: 'Sentence Completed !'
-      })
+      })*/
    }
    else
    {
     let SeconddKey= this.answerHintdown.find(el=>el.key===key);
     if(!!SeconddKey)
     {
-      Swal.fire({
+	   alert("Sentence Completed !");
+      /*Swal.fire({
 
         icon: 'success',
         title: 'Sentence Completed !'
-        })
+        })*/
     }
 
    }
 
   }
   keyUp(event, rowIndex, keyIndex) {
-    console.log(rowIndex);
     let enterKey: string = event.target.value;
     let toLowerCaseKey = enterKey.toUpperCase();
 
     this.checkString(toLowerCaseKey, rowIndex, keyIndex);
     this.testString = this.getAppendString();
-    console.log("appned string is",this.testString);
     this.checkWonStatus(this.testString);
     this.answerModel.map(element => {
       if (element.name.charAt(0) === toLowerCaseKey && element.row === rowIndex && element.col === keyIndex) {
@@ -218,7 +229,6 @@ export class AppComponent implements OnInit {
     });
   }
   showGridAns() {
-    console.log('Hello World !!');
     this.showAns = true;
   }
   hideGridAns() {
@@ -226,8 +236,17 @@ export class AppComponent implements OnInit {
   }
 }
 export class GridDataModel {
-  grid: number;
-  sym_type: string;
+  grid: any;
+  sym_type: any;
   // theme_type: string;
   stateType: string;
+}
+export class AnswerListArray {
+  name: Array<ObjectModel>;
+}
+export class ObjectModel {
+  row: number;
+  col: number;
+  name: string;
+  hint: string;
 }

@@ -2,7 +2,7 @@ body {
     font: 20px Montserrat, sans-serif;
     line-height: 1.8;
     color: #f5f6f7;
-    font-family: cursive !important;
+    font-family: Arial, Helvetica, sans-serif !important;
 }
 
 tr td {
@@ -16,13 +16,13 @@ ul li {
 tr td p {
     color: #00000091;
     position: absolute;
-    bottom: 8px;
+    bottom: 16px;
     font-weight: 600;
-    font-size: 16px;
+    font-size: 11px;
 }
 
 .back {
-    background: #000000;
+    background: #ffffff;
     background-repeat: no-repeat;
     background-size: cover;
     position: relative;
@@ -30,7 +30,7 @@ tr td p {
 
 a.color-white {
     color: #ffffff !important;
-    font-family: cursive !important;
+    font-family: Arial, Helvetica, sans-serif !important;
 }
 
 .textSize {
@@ -64,7 +64,7 @@ table {
     margin-left: 20px;
     margin-right: 20px;
     max-width: 100%;
-    box-shadow: 0 0 30px #ffffff;
+    box-shadow: 0 0 30px #757474;
 }
 
 button {
@@ -76,8 +76,8 @@ table tr {
 }
 
 table td {
-    width: 2.7em;
-    height: 2em;
+    width: 3em;
+    height: 3em;
     border: 1px solid #000000;
     padding: 0;
     margin: 0;
@@ -118,29 +118,24 @@ input.done {
 #puzzle-wrapper {
     display: inline;
     float: right;
-    padding-right: 90px;
-}
-
-.img-across {
-    height: 8em !important;
-    width: 6.7em;
+    margin-right: 60px;
+    padding-top: 18px;
 }
 
 #puzzle-clues {
     float: left;
-    color: #ffffff;
+    color: #000000;
     text-align: left !important;
-    box-shadow: 0 0 30px #ffffff;
-    border-radius: 2em;
-    padding-left: 30px;
-    padding-right: 30px;
-    padding-top: 18px;
-    padding-bottom: 18px;
-    margin-right: 30px;
+    box-shadow: 0 0 30px #757474;
+    border-radius: 0 2em 0 2em;
+    padding-left: 20px;
+    padding-right: 10px;
+    height: fit-content;
+    margin-left: 100px;
 }
 
 #puzzle-clues li {
     font-size: 0.9em;
-    font-family: cursive;
+    font-family: Arial, Helvetica, sans-serif;
     line-height: 1.6em;
 }

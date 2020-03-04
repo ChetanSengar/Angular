@@ -1,0 +1,124 @@
+{
+    "Across Words": {
+        "name": [
+            {
+                "row": 0,
+                "col": 3,
+                "name": "SOB",
+                "hint": "Spar"
+            },
+            {
+                "row": 1,
+                "col": 0,
+                "name": "FAVA",
+                "hint": "Heavy mist"
+            },
+            {
+                "row": 1,
+                "col": 5,
+                "name": "HAKE",
+                "hint": "Meat from a pig's leg"
+            },
+            {
+                "row": 2,
+                "col": 3,
+                "name": "WHO",
+                "hint": "Em^ploy^ers' as^so^ci^ation"
+            },
+            {
+                "row": 3,
+                "col": 0,
+                "name": "ARTS",
+                "hint": "Em^bank^ment to restrain water"
+            },
+            {
+                "row": 3,
+                "col": 5,
+                "name": "SARI",
+                "hint": "This very minute"
+            },
+            {
+                "row": 5,
+                "col": 0,
+                "name": "BRAM",
+                "hint": "Tiny point"
+            },
+            {
+                "row": 5,
+                "col": 5,
+                "name": "OMEN",
+                "hint": "Auction item"
+            },
+            {
+                "row": 6,
+                "col": 3,
+                "name": "FIR",
+                "hint": "Hop-rich beer"
+            },
+            {
+                "row": 7,
+                "col": 0,
+                "name": "SMEE",
+                "hint": "\"<i>The Grand _ Duke of York</i>"
+            },
+            {
+                "row": 7,
+                "col": 5,
+                "name": "BOIL",
+                "hint": "Barking animal"
+            },
+            {
+                "row": 8,
+                "col": 3,
+                "name": "REP",
+                "hint": "Part"
+            }
+        ]
+    },
+    "Down Words": {
+        "name": [
+            {
+                "row": 3,
+                "col": 0,
+                "name": "ALB",
+                "hint": "Un^appre^ci^ated"
+            },
+            {
+                "row": 0,
+                "col": 1,
+                "name": "LAIR",
+                "hint": "Wall plant"
+            },
+            {
+                "row": 3,
+                "col": 2,
+                "name": "TEA",
+                "hint": "Small cake"
+            },
+            {
+                "row": 0,
+                "col": 3,
+                "name": "SAWS",
+                "hint": "Convent resi^dent"
+            },
+            {
+                "row": 3,
+                "col": 6,
+                "name": "ARM",
+                "hint": "For that reason"
+            },
+            {
+                "row": 5,
+                "col": 7,
+                "name": "EVIL",
+                "hint": "Well-con^di^tioned"
+            },
+            {
+                "row": 3,
+                "col": 8,
+                "name": "IAN",
+                "hint": "Bent line"
+            }
+        ]
+    }
+}
